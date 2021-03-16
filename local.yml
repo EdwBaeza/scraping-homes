@@ -1,0 +1,27 @@
+version: '3.9'
+
+volumes:
+  local_postgres_data: {}
+
+services:
+  scraping_homes:
+    build:
+      context: .
+      dockerfile: ./compose/local/Dockerfile
+    stdin_open: true
+    tty: true
+    image: scraping_homes_local
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command: ./compose/local/entrypoint.sh
+
+  db:
+    image: postgres:12.6-alpine
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
