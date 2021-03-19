@@ -1,2 +1,4 @@
 psycopg2==2.8.6 --no-binary psycopg2
 factory-boy==3.2.0
+sqlalchemy-migrate
+sqlalchemy==1.4.0

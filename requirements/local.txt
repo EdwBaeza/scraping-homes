@@ -1,3 +1,4 @@
+-r ./base.txt
 ipdb==0.13.5
 pytest==6.2.2
 flake8==3.8

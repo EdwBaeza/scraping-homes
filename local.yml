@@ -4,7 +4,7 @@ volumes:
   local_postgres_data: {}
 
 services:
-  scraping_homes:
+  app:
     build:
       context: .
       dockerfile: ./compose/local/Dockerfile
@@ -16,7 +16,7 @@ services:
     volumes:
       - .:/app
     env_file:
-      - .env
+      - ./.env
     command: ./compose/local/entrypoint.sh
 
   db:
@@ -24,4 +24,4 @@ services:
     volumes:
       - local_postgres_data:/var/lib/postgresql/data
     env_file:
-      - .env
+      - ./.env
