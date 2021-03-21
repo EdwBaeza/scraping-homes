@@ -33,4 +33,7 @@ until postgres_ready; do
 done
 >&2 echo 'PostgreSQL is available'
 
+echo 'migrating...'
+python repository/manage.py upgrade
+
 exec "$@"

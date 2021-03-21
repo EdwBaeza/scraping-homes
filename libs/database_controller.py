@@ -3,8 +3,11 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 
+from libs.config import get_config
+
+
 class DatabaseController(object):
-    """docstring for DatabaseController"""
+    """ DatabaseController """
     drive = 'postgresql+psycopg2'
 
     def __init__(self, **kwargs):
@@ -30,3 +33,13 @@ class DatabaseController(object):
         """ return table using reflected"""
         return Table(table_name, MetaData(), autoload_with=self.engine)
 
+
+def get_default_controller():
+    config = get_config()
+
+    return DatabaseController(
+            user=config.POSTGRES_USER,
+            password=config.POSTGRES_PASSWORD,
+            host=config.POSTGRES_HOST,
+            name=config.POSTGRES_DB
+        )
