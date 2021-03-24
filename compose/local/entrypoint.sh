@@ -33,6 +33,34 @@ until postgres_ready; do
 done
 >&2 echo 'PostgreSQL is available'
 
+is_version_database_starting(){
+python << END
+import sys
+import psycopg2
+try:
+    connection = psycopg2.connect(
+        dbname="${POSTGRES_DB}",
+        user="${POSTGRES_USER}",
+        password="${POSTGRES_PASSWORD}",
+        host="${POSTGRES_HOST}",
+        port="${POSTGRES_PORT}",
+    )
+    cursor = connection.cursor()
+    cursor.execute('SELECT * FROM migrate_version;')
+
+except Exception:
+    sys.exit(-1)
+sys.exit(0)
+END
+}
+
+if is_version_database_starting; then
+    echo 'database already versioning started'
+else
+    echo 'versioning database...'
+    python repository/manage.py version_control
+fi
+
 echo 'migrating...'
 python repository/manage.py upgrade
 

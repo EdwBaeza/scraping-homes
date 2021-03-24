@@ -1,6 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import os
+import yaml
 import json
 
 
@@ -20,5 +19,12 @@ class Config(metaclass=Meta):
         pass
 
 
-def get_config() -> Config:
-    return Config(**dict(os.environ))
+def _read_settings_yaml():
+    with open('settings.yaml', 'r') as file_stream:
+        yaml_loaded = yaml.load(file_stream, Loader=yaml.FullLoader)
+
+    return yaml_loaded
+
+def get_config():
+    settings_yaml = _read_settings_yaml()
+    return Config(**{ **dict(os.environ), **settings_yaml })

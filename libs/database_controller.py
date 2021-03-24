@@ -29,7 +29,7 @@ class DatabaseController(object):
         else:
             return session
 
-    def get_table(self, table_name):
+    def get_table(self, table_name: str):
         """ return table using reflected"""
         return Table(table_name, MetaData(), autoload_with=self.engine)
 
