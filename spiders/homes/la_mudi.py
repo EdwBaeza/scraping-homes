@@ -49,8 +49,7 @@ class LaMudi(BaseHomeSpider):
 
         self.navigate(self.URL)
         while True:
-            soup = self.get_content_soup()
-            elements+= soup.select(self.HOME_LINK_ELEMENT_CSS)
+            elements += self.get_elements_by_css(self.HOME_LINK_ELEMENT_CSS)
             self.logger.info("Urls extracted now: %d", len(elements))
 
             if not self.paginate():
