@@ -7,7 +7,6 @@ from libs.config import get_config
 
 
 class DatabaseController(object):
-    """ DatabaseController """
     drive = 'postgresql+psycopg2'
 
     def __init__(self, **kwargs):
@@ -15,12 +14,12 @@ class DatabaseController(object):
         self.engine = self.get_engine()
 
     def get_engine(self):
-        """ create and return engine"""
+        """ create and return engine """
         access = f"{self.user}:{self.password}@{self.host}/{self.name}"
         return create_engine(f"{self.drive}://{access}")
 
     def get_session(self):
-        """ start connection to database"""
+        """ start connection to database """
         try:
             DBSession = sessionmaker(bind=self.engine, autoflush=True)
             session = DBSession()
@@ -30,7 +29,7 @@ class DatabaseController(object):
             return session
 
     def get_table(self, table_name: str):
-        """ return table using reflected"""
+        """ return table using reflected """
         return Table(table_name, MetaData(), autoload_with=self.engine)
 
 

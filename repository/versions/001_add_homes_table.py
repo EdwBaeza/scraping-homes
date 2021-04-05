@@ -23,6 +23,8 @@ homes = Table(
     Column('id', Integer, primary_key=True),
     Column('title', String(500)),
     Column('url', Text(), unique=True),
+    Column('site', String(500)),
+    Column('type', String(500)),
     Column('description', Text()),
     Column('price_per_square_meter', Numeric(precision=20, scale=4)),
     Column('price', Numeric(precision=20, scale=4)),
@@ -55,7 +57,6 @@ homes = Table(
     Column('latitude', Float()),
     Column('longitude', Float()),
     Column('extra_features', JSONB()),
-
 )
 
 def upgrade(migrate_engine):

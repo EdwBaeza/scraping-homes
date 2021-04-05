@@ -1,7 +1,8 @@
-from abc import ABC
 import random
 import time
 import uuid
+import logging
+from abc import ABC
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -14,6 +15,7 @@ class Base(ABC):
         self._headless = kwargs.get('headless', False)
         self._builder = browser_builder
         self.browser = self._get_browser()
+        self.logger = logging.getLogger()
 
     def _get_browser(self):
         self._builder.add_general_settings()
@@ -45,6 +47,18 @@ class Base(ABC):
     def get_html_tag(self):
         return self.browser.find_element_by_tag_name('html')
 
+    def get_string_by_css(self, css):
+        element = self.get_element_by_css(css)
+        return element.get_text() if element else None
+
+    def get_element_by_css(self, css):
+        page = self.get_content_soup()
+        return page.select_one(css)
+
+    def get_elements_by_css(self, css):
+        page = self.get_content_soup()
+        return page.select(css)
+
     def page_down(self):
         html = self.get_html_tag()
         html.send_keys(Keys.PAGE_DOWN)
@@ -64,7 +78,7 @@ class Base(ABC):
 
     def screenshot(self):
         uuid4 = str(uuid.uuid4())
-        full_name = f"./screenshot_{uuid4}.png"
+        full_name = f"./screenshot_{self.name}_{uuid4}.png"
         self.browser.save_screenshot(full_name)
 
     def move_to_element(self, element):

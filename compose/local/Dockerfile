@@ -12,7 +12,7 @@ RUN apk update\
 
 RUN apk add chromium chromium-chromedriver
 
-# dependency installation is here to be trapped by docker cache layer
+# install dependencies is here to be trapped by docker cache layer
 COPY ./requirements/base.txt .
 COPY ./requirements/local.txt .
 RUN pip install -r local.txt
@@ -25,4 +25,4 @@ COPY spiders/ spiders/
 COPY tests/ tests/
 COPY validators/ validators/
 COPY .env .
-COPY run.py .
+COPY main.py .
