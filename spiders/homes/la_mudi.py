@@ -2,15 +2,15 @@ from spiders.homes.base import BaseHomeSpider
 
 
 class LaMudi(BaseHomeSpider):
-    name = "la_mudi"
+    NAME = "la_mudi"
     URL = "https://www.lamudi.com.mx/yucatan/merida/casa/for-sale/"
     NEXT_PAGE_BUTTON_CSS = ".next > a"
     HOME_LINK_ELEMENT_CSS = ".ListingCell-TitleWrapper > h2 > a"
     TITLE_CSS = ".Header-title-block > h1"
     DESCRIPTION_CSS = ".ViewMore-text div.ViewMore-text-description"
 
-    def __init__(self, browser_builder, **kwargs):
-        super(BaseHomeSpider, self).__init__(browser_builder, **kwargs)
+    def __init__(self, browser_builder):
+        super(BaseHomeSpider, self).__init__(browser_builder)
 
     def extract_title(self):
         return self.get_string_by_css(self.TITLE_CSS)

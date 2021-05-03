@@ -15,7 +15,6 @@ from libs.database_controller import get_default_controller
 class LinkExtractor(Base):
 
     def __init__(self, spider, **kwargs):
-        self.config = get_config()
         self.logger = logging.getLogger()
         self.controller = get_default_controller()
         self.session = self.controller.get_session()

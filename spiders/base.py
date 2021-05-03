@@ -11,8 +11,7 @@ from bs4 import BeautifulSoup
 
 class Base(ABC):
 
-    def __init__(self, browser_builder, **kwargs):
-        self._headless = kwargs.get('headless', False)
+    def __init__(self, browser_builder):
         self._builder = browser_builder
         self.browser = self._get_browser()
         self.logger = logging.getLogger()
@@ -20,9 +19,7 @@ class Base(ABC):
     def _get_browser(self):
         self._builder.add_general_settings()
         self._builder.add_docker_settings()
-
-        if self._headless:
-            self._builder.add_headless_settings()
+        self._builder.add_headless_settings()
 
         return self._builder.browser
 
@@ -78,7 +75,7 @@ class Base(ABC):
 
     def screenshot(self):
         uuid4 = str(uuid.uuid4())
-        full_name = f"./screenshot_{self.name}_{uuid4}.png"
+        full_name = f"./screenshot_{self.NAME}_{uuid4}.png"
         self.browser.save_screenshot(full_name)
 
     def move_to_element(self, element):

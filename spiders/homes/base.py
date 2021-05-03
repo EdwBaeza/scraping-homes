@@ -5,8 +5,8 @@ from spiders.base import Base
 
 class BaseHomeSpider(Base, ABC):
 
-    def __init__(self, browser_builder, **kwargs):
-        super(Base, self).__init__(browser_builder, **kwargs)
+    def __init__(self, browser_builder):
+        super(Base, self).__init__(browser_builder)
 
     @abstractmethod
     def extract_title(self):
