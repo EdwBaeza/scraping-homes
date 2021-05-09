@@ -5,10 +5,7 @@ from sqlalchemy import select, insert
 
 from models.home import Home
 from commands.base import Base
-from spiders.homes.la_mudi import LaMudi
 
-from libs.config import get_config
-from libs.browsers.chrome_builder import ChromeBuilder
 from libs.database_controller import get_default_controller
 
 
@@ -36,12 +33,11 @@ class LinkExtractor(Base):
             return
 
         self.logger.info("Inserting url %s", url)
-        utc_current_datetime = datetime.now(timezone.utc)
         self.session.add(
             Home(
                 url=url,
-                site=self.spider.name,
-                created_at=utc_current_datetime
+                site=self.spider.NAME,
+                created_at=datetime.now(timezone.utc)
             )
         )
         self.session.commit()

@@ -1,1 +1,2 @@
-from commands.homes.link_extractor import LinkExtractor
+from commands.link_extractor import LinkExtractor
+from commands.home_extractor import HomeExtractor

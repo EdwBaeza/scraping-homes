@@ -33,6 +33,10 @@ class BaseHomeSpider(Base, ABC):
         pass
 
     @abstractmethod
+    def extract_extra_features(self):
+        pass
+
+    @abstractmethod
     def paginate(self):
         pass
 

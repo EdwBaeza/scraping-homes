@@ -12,7 +12,6 @@ SPIDERS = {
 
 def main():
     logger_setup()
-
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-s",
@@ -27,7 +26,8 @@ def main():
         required=True,
         help="Commands",
         choices=[
-            "LinkExtractor"
+            "LinkExtractor",
+            "HomeExtractor"
         ]
     )
     args = parser.parse_args()
