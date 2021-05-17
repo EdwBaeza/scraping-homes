@@ -1,5 +1,8 @@
 version: '3.9'
 
+volumes:
+  production_postgres_data: {}
+
 services:
   scraping_homes:
     build:
@@ -10,3 +13,11 @@ services:
       - .:/app
     env_file:
       - .env
+  db:
+    image: postgres:12.6-alpine
+    volumes:
+      - production_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./.env
