@@ -79,7 +79,7 @@ class LaMudi(BaseHomeSpider):
             elements += self.get_content_soup().select(home_link_element_css)
             self.logger.info("Urls extracted now: %d", len(elements))
 
-            if not self.paginate() or len(elements) >= 100:
+            if not self.paginate():
                 self.logger.info("finished page: %s", self.browser.current_url)
                 break
 
