@@ -79,7 +79,8 @@ class LaMudi(BaseHomeSpider):
             elements += self.get_content_soup().select(home_link_element_css)
             self.logger.info("Urls extracted now: %d", len(elements))
 
-            if not self.paginate():
+            if not self.paginate() or len(elements) >= 100:
+                self.logger.info("finished page: %s", self.browser.current_url)
                 break
 
         return [element['href'] for element in elements]
@@ -89,6 +90,7 @@ class LaMudi(BaseHomeSpider):
         price = self.extract_price()
         common_features = self.extract_common_features()
         square_meter = common_features.get("square_meter")
+
         return {
             "url": url,
             "title": self.extract_title(),

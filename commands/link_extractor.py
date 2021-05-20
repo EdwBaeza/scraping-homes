@@ -20,19 +20,17 @@ class LinkExtractor(Base):
     def execute(self):
         self.logger.info("Extracting links...")
         links = self.spider.get_links()
-
         self.logger.info("Links extracted: %d", len(links))
+
         for link in links:
+            self.logger.info("Current url %s", link)
+            if self._exist_url(link):
+                self.logger.info("Url already exists")
+                continue
+
             self._insert_link_extracted(link)
 
     def _insert_link_extracted(self, url):
-        query = select(Home).where(Home.url == url)
-
-        if self.session.execute(query).fetchone():
-            self.logger.info("Url already exists")
-            return
-
-        self.logger.info("Inserting url %s", url)
         self.session.add(
             Home(
                 url=url,
@@ -42,3 +40,8 @@ class LinkExtractor(Base):
         )
         self.session.commit()
         self.session.close()
+
+    def _exist_url(self, url):
+        query = select(Home).where(Home.url == url)
+        return self.session.execute(query).fetchone()
+

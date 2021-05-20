@@ -19,7 +19,7 @@ class HomeExtractor(Base):
 
     def execute(self):
         self.logger.info("Extracting Homes...")
-        homes = self.session.query(Home).filter(Home.extracted_at.is_(None) & Home.url.isnot(None)).all()
+        homes = self._get_homes()
         self.logger.info("Homes to extracted: %d", len(homes))
 
         for home in homes:
@@ -27,3 +27,9 @@ class HomeExtractor(Base):
             update_stmp = Home.__table__.update(Home.id == home.id).values(**self.spider.get_data(home.url))
             self.session.execute(update_stmp)
             self.session.commit()
+
+    def _get_homes(self):
+        return self.session\
+                    .query(Home)\
+                    .filter(Home.extracted_at.is_(None) & Home.url.isnot(None))\
+                    .all()
