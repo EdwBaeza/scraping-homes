@@ -32,7 +32,7 @@ class HomeExtractor(Base):
         return self.session\
                     .query(Home)\
                     .filter(Home.extracted_at.is_(None) & Home.url.isnot(None))\
-                    .limit(self.__max_items)\
+                    .limit(self.__max_items())\
                     .all()
 
     def __max_items(self):
