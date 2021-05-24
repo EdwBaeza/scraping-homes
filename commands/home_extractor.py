@@ -31,7 +31,7 @@ class HomeExtractor(Base):
         return self.session\
                     .query(Home)\
                     .filter(Home.extracted_at.is_(None) & Home.url.isnot(None))\
-                    .limit(self.__max_items())\
+                    .limit(self.__max_items())
 
     def __max_items(self):
-        self.__config.tasks.get("home_extractor", {}).get("max_items", 200)
+        return self.__config.tasks.get("home_extractor", {}).get("max_items", 200)
