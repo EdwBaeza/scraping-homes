@@ -12,16 +12,16 @@ from bs4 import BeautifulSoup
 class Base(ABC):
 
     def __init__(self, browser_builder):
-        self._builder = browser_builder
-        self.browser = self._get_browser()
+        self.__builder = browser_builder
+        self.browser = self.__get_browser()
         self.logger = logging.getLogger()
 
-    def _get_browser(self):
-        self._builder.add_general_settings()
-        self._builder.add_docker_settings()
-        self._builder.add_headless_settings()
+    def __get_browser(self):
+        self.__builder.add_general_settings()
+        self.__builder.add_docker_settings()
+        self.__builder.add_headless_settings()
 
-        return self._builder.browser
+        return self.__builder.browser
 
     def time_sleep(self, time_to_sleep=3.0):
         time.sleep(time_to_sleep)

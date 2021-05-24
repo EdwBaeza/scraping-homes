@@ -24,13 +24,13 @@ class LinkExtractor(Base):
 
         for link in links:
             self.logger.info("Current url %s", link)
-            if self._exist_url(link):
+            if self.__exists_url(link):
                 self.logger.info("Url already exists")
                 continue
 
-            self._insert_link_extracted(link)
+            self.__insert_link_extracted(link)
 
-    def _insert_link_extracted(self, url):
+    def __insert_link_extracted(self, url):
         self.session.add(
             Home(
                 url=url,
@@ -41,7 +41,7 @@ class LinkExtractor(Base):
         self.session.commit()
         self.session.close()
 
-    def _exist_url(self, url):
+    def __exists_url(self, url):
         query = select(Home).where(Home.url == url)
         return self.session.execute(query).fetchone()
 

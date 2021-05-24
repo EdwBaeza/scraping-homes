@@ -8,44 +8,44 @@ from libs.browsers.base_builder import BaseBuilder
 class ChromeBuilder(BaseBuilder):
 
     def __init__(self):
-        self._options = webdriver.ChromeOptions()
-        self._config = get_config()
-        self._browser = None
+        self.__options = webdriver.ChromeOptions()
+        self.__config = get_config()
+        self.__browser = None
 
     @property
     def browser(self):
-        self._browser = webdriver.Chrome(chrome_options=self._options)
+        self.__browser = webdriver.Chrome(chrome_options=self.__options)
 
-        return self._browser
+        return self.__browser
 
     def add_general_settings(self):
-        size = self._get_item("sizes")
-        user_agent = self._get_item("user_agents")
-        language = self._config.browser["languages"]
-        self._options.add_argument(f"window-size={size}")
-        self._options.add_argument("--no-sandbox")
-        self._options.add_argument("--disable-gpu")
-        self._options.add_argument("--hide-scrollbars")
-        self._options.add_argument("--disable-popup-blocking")
-        self._options.add_argument("--disable-infobars")
-        self._options.add_argument(f"user-agent={user_agent}")
-        self._options.add_argument("--ignore-certificate-errors")
-        self._options.add_experimental_option("prefs", { "intl.accept_languages": language })
+        size = self.__get_item("sizes")
+        user_agent = self.__get_item("user_agents")
+        language = self.__config.browser["languages"]
+        self.__options.add_argument(f"window-size={size}")
+        self.__options.add_argument("--no-sandbox")
+        self.__options.add_argument("--disable-gpu")
+        self.__options.add_argument("--hide-scrollbars")
+        self.__options.add_argument("--disable-popup-blocking")
+        self.__options.add_argument("--disable-infobars")
+        self.__options.add_argument(f"user-agent={user_agent}")
+        self.__options.add_argument("--ignore-certificate-errors")
+        self.__options.add_experimental_option("prefs", { "intl.accept_languages": language })
 
     def add_docker_settings(self):
-        self._options.add_argument('--disable-dev-shm-usage')
-        self._options.add_argument('--single-process')
-        self._options.add_argument('--user-data-dir=/tmp/user-data')
-        self._options.add_argument('--data-path=/tmp/data-path')
-        self._options.add_argument('--homedir=/tmp')
-        self._options.add_argument('--disk-cache-dir=/tmp/cache-dir')
+        self.__options.add_argument('--disable-dev-shm-usage')
+        self.__options.add_argument('--single-process')
+        self.__options.add_argument('--user-data-dir=/tmp/user-data')
+        self.__options.add_argument('--data-path=/tmp/data-path')
+        self.__options.add_argument('--homedir=/tmp')
+        self.__options.add_argument('--disk-cache-dir=/tmp/cache-dir')
 
     def add_headless_settings(self):
-        if self._config.browser["headless"]:
-            self._options.add_argument('--headless')
+        if self.__config.browser["headless"]:
+            self.__options.add_argument('--headless')
 
-    def _get_item(self, key):
-        data = self._config.browser[key]
+    def __get_item(self, key):
+        data = self.__config.browser[key]
         size = len(data) - 1
         assert size > 0, f'Data not found {key}'
         return data[random.randint(0, size)]

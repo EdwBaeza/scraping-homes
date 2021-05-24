@@ -19,12 +19,12 @@ class Config(metaclass=Meta):
         pass
 
 
-def _read_settings_yaml():
+def __read_settings_yaml():
     with open('settings.yaml', 'r') as file_stream:
         yaml_loaded = yaml.load(file_stream, Loader=yaml.FullLoader)
 
     return yaml_loaded
 
 def get_config():
-    settings_yaml = _read_settings_yaml()
+    settings_yaml = __read_settings_yaml()
     return Config(**{ **dict(os.environ), **settings_yaml })
