@@ -27,6 +27,6 @@ browser:
     "1600,1200",
   ]
   languages: "es-MX"
-  tasks:
-    home_extractor:
-      max_items: 20
+tasks:
+  home_extractor:
+    max_items: 100
