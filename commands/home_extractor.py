@@ -1,12 +1,11 @@
 import logging
-from datetime import datetime, timezone
 
 from models.home import Home
 from commands.base import Base
 
 from libs.database_controller import get_default_controller
-
 from libs.config import get_config
+
 
 class HomeExtractor(Base):
 
@@ -20,7 +19,7 @@ class HomeExtractor(Base):
     def execute(self):
         self.logger.info("Extracting Homes...")
         homes = self.__get_homes()
-        self.logger.info("Homes to extracted: %d", len(homes))
+        self.logger.info("Homes to extracted: %d", homes.count())
 
         for home in homes:
             self.logger.info("Current Home: %s", home.url)
@@ -33,7 +32,6 @@ class HomeExtractor(Base):
                     .query(Home)\
                     .filter(Home.extracted_at.is_(None) & Home.url.isnot(None))\
                     .limit(self.__max_items())\
-                    .all()
 
     def __max_items(self):
         self.__config.tasks.get("home_extractor", {}).get("max_items", 200)
