@@ -8,6 +8,7 @@ from libs.config import get_config
 
 
 class HomeExtractor(Base):
+    DEFAULT_MAX_ITEMS = 200
 
     def __init__(self, spider, **kwargs):
         self.__config = get_config()
@@ -34,4 +35,4 @@ class HomeExtractor(Base):
                     .limit(self.__max_items())
 
     def __max_items(self):
-        return self.__config.tasks.get("home_extractor", {}).get("max_items", 200)
+        return self.__config.tasks.get("home_extractor", {}).get("max_items", self.DEFAULT_MAX_ITEMS)

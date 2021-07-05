@@ -46,14 +46,22 @@ class Base(ABC):
 
     def get_string_by_css(self, css):
         element = self.get_element_by_css(css)
-        return element.get_text() if element else None
+
+        return element.get_text().strip() if element else None
+
+    def get_numeric_by_css(self, css):
+        data = self.get_string_by_css(css)
+
+        return float(data.strip()) if data else None
 
     def get_element_by_css(self, css):
         page = self.get_content_soup()
+
         return page.select_one(css)
 
     def get_elements_by_css(self, css):
         page = self.get_content_soup()
+
         return page.select(css)
 
     def page_down(self):
@@ -68,7 +76,7 @@ class Base(ABC):
 
     def scroll_to_end(self):
         html = self.get_html_tag()
-        for index in range(10):
+        for _ in range(10):
             html.send_keys(Keys.PAGE_DOWN)
             self.time_sleep(1.0)
         self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight)")

@@ -33,28 +33,48 @@ class LaMudi(BaseHomeSpider):
 
     def extract_common_features(self):
         clean_meters = lambda square_meter: float(square_meter.replace("m²", "").strip()) if square_meter else None
-        rooms = self.get_string_by_css("span.Overview-attribute.icon-bedrooms-v4")
-        baths = self.get_string_by_css('.ellipsis[data-attr-name="bathrooms"] + div')
-        parking_lots = self.get_string_by_css('.ellipsis[data-attr-name="car_spaces"] + div')
-        square_meter = self.get_string_by_css("span.Overview-attribute.icon-land_size-v4")
-        building_square_meter = self.get_string_by_css("span.icon-livingsize-v4.Overview-attribute")
 
         return {
-            "rooms": float(rooms.strip()) if rooms else None,
-            'baths': float(baths.strip()) if baths else None,
-            'parking_lots': float(parking_lots.strip()) if parking_lots else None,
-            "square_meter": clean_meters(square_meter),
-            "building_square_meter": clean_meters(building_square_meter)
+            "rooms": self.get_numeric_by_css("span.Overview-attribute.icon-bedrooms-v4"),
+            'baths': self.get_numeric_by_css('.ellipsis[data-attr-name="bathrooms"] + div'),
+            'parking_lots': self.get_numeric_by_css('.ellipsis[data-attr-name="car_spaces"] + div'),
+            "square_meter": clean_meters(self.get_string_by_css("span.Overview-attribute.icon-land_size-v4")),
+            "building_square_meter": clean_meters(self.get_string_by_css("span.icon-livingsize-v4.Overview-attribute"))
         }
 
     def extract_extra_features(self):
-        agent_name = self.get_string_by_css("div.AgentInfoV2-agent-name")
-        full_address = self.get_string_by_css("span.Header-title-address-text")
-
         return {
-            'agent_name': agent_name.strip() if agent_name else None,
-            'full_address': full_address.strip() if full_address else None
+            "agent_name": self.get_string_by_css("div.AgentInfoV2-agent-name"),
+            "full_address": self.get_string_by_css("span.Header-title-address-text"),
+            "la_mudi":  self.la_mudi_insights()
+
         }
+
+    def la_mudi_insights(self):
+        insights = {
+            "neighborhood_score": self.get_string_by_css("div.AreaRating-Overall")
+        }
+        elements = self.get_elements_by_css(".AreaRatingStars-container div.Rating-container")
+
+        for element in elements:
+            if len(element) > 1:
+                first, second = [*element]
+                stars = len(second.select(".icon-star"))
+                stars +=  0.5 if second.select_one(".icon-star-half") else 0.0
+                insights[first.get_text().strip()] = stars
+
+        return insights
+
+    def extract_date_out(self):
+        data = self.get_string_by_css('div[data-attr-name="empty"] + div')
+
+        return datetime.strptime(data.strip(), "%d/%m/%y") if data else None
+
+    def extract_building_year(self):
+        return self.get_numeric_by_css('div[data-attr-name="year_built"] + div')
+
+    def extract_total_rooms(self):
+        return self.get_numeric_by_css('div[data-attr-name="rooms_total"] + div')
 
     def paginate(self):
         try:
@@ -100,5 +120,8 @@ class LaMudi(BaseHomeSpider):
             'extra_features': self.extract_extra_features(),
             **common_features,
             **self.extract_location(),
-            'extracted_at': datetime.now(timezone.utc)
+            "extracted_at": datetime.now(timezone.utc),
+            "date_out": self.extract_date_out(),
+            "building_year": self.extract_building_year(),
+            "total_rooms": self.extract_total_rooms()
         }

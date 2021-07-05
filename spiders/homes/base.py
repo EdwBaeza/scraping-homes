@@ -37,6 +37,22 @@ class BaseHomeSpider(Base, ABC):
         pass
 
     @abstractmethod
+    def extract_date_out(self):
+        pass
+
+    @abstractmethod
+    def extract_building_year(self):
+        pass
+
+    @abstractmethod
+    def extract_total_rooms(self):
+        pass
+
+    @abstractmethod
+    def extract_date_out(self):
+        pass
+
+    @abstractmethod
     def paginate(self):
         pass
 

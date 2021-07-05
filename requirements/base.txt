@@ -5,3 +5,4 @@ sqlalchemy==1.4.0
 selenium
 beautifulsoup4==4.9.3
 PyYAML==5.4.1
+pytz
