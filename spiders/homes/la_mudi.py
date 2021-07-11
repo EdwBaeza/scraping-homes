@@ -17,7 +17,7 @@ class LaMudi(BaseHomeSpider):
         return self.get_string_by_css(".ViewMore-text div.ViewMore-text-description")
 
     def extract_location(self):
-        location_element = self.get_element_by_css(self, "#js-developmentMap") or {}
+        location_element = self.get_element_by_css("#js-developmentMap") or {}
 
         return {
             "latitude": location_element.get("data-lat"),
