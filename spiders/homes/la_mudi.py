@@ -17,7 +17,7 @@ class LaMudi(BaseHomeSpider):
         return self.get_string_by_css(".ViewMore-text div.ViewMore-text-description")
 
     def extract_location(self):
-        location_element = self.get_content_soup().select_one("#js-developmentMap") or {}
+        location_element = self.get_element_by_css(self, "#js-developmentMap") or {}
 
         return {
             "latitude": location_element.get("data-lat"),
@@ -96,7 +96,7 @@ class LaMudi(BaseHomeSpider):
 
         self.navigate(self.URL)
         while True:
-            elements += self.get_content_soup().select(home_link_element_css)
+            elements += self.get_elements_by_css(self, home_link_element_css)
             self.logger.info("Urls extracted now: %d", len(elements))
 
             if not self.paginate():

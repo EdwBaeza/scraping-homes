@@ -52,17 +52,13 @@ class Base(ABC):
     def get_numeric_by_css(self, css):
         data = self.get_string_by_css(css)
 
-        return float(data.strip()) if data else None
+        return float(data) if data else None
 
     def get_element_by_css(self, css):
-        page = self.get_content_soup()
-
-        return page.select_one(css)
+        return self.get_content_soup().select_one(css)
 
     def get_elements_by_css(self, css):
-        page = self.get_content_soup()
-
-        return page.select(css)
+        return self.get_content_soup().select(css)
 
     def page_down(self):
         html = self.get_html_tag()
