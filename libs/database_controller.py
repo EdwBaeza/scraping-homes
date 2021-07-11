@@ -15,7 +15,7 @@ class DatabaseController(object):
 
     def get_engine(self):
         """ create and return engine """
-        access = f"{self.user}:{self.password}@{self.host}/{self.name}"
+        access = f"{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"
         return create_engine(f"{self.drive}://{access}")
 
     def get_session(self):
@@ -39,6 +39,7 @@ def get_default_controller():
     return DatabaseController(
             user=config.POSTGRES_USER,
             password=config.POSTGRES_PASSWORD,
+            port=config.POSTGRES_PORT,
             host=config.POSTGRES_HOST,
             name=config.POSTGRES_DB
         )
